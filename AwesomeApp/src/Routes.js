@@ -11,8 +11,7 @@ import {
   StyleSheet
 } from 'react-native';
 
-import Navbar from 'react-native-navbar';
-import Menu from 'react-native-navbar/Menu'
+import NavbarWrapper from 'react-native-navbar';
 
 import Home from "./Pages/Home";
 import One from "./Pages/One";
@@ -34,6 +33,10 @@ export default class Routes extends Component {
     };
   }
 
+  _setNavigator = (nav) => {
+    this.navigator = nav;
+  };
+
   componentDidMount = () => {
     this.navigator.navigationContext.addListener('didfocus', () => {
       this._checkBackButton();
@@ -50,6 +53,11 @@ export default class Routes extends Component {
 
   configureScene = (route, routeStack) => {
     return Navigator.SceneConfigs.FloatFromRight;
+  };
+
+
+  _menuItemSelected = (item) => {
+     //
   };
 
   renderScene = (route, navigator) =>{
@@ -78,27 +86,21 @@ export default class Routes extends Component {
 
   render() {
     return (
-      <View style={styles.appView}>
-          <Navigator
-            navigationBar=
-              {
-                <Navbar
-                        hasBack={this.state.hasBack}
-                        backPressed={this._back}
-                        show={true}
-                        title={"Awesome navbar"}
-                        openMenu={this._openMenu}
-                />
-              }
-            initialRoute={APP_ROUTES.HOME}
-            renderScene={this.renderScene}
-            ref={(nav) => this.navigator = nav}
-            configureScene={this.configureScene}
-          />
+    <NavbarWrapper
+      hasBack={this.state.hasBack}
+      backPressed={this._back}
+      show={true}
+      title={"Awesome navbar"}
+      openMenu={this._openMenu}
+      closeMenu = {this._closeMenu}
+      initialRoute={APP_ROUTES.HOME}
+      renderScene={this.renderScene}
+      setNavigator={ this._setNavigator}
+      configureScene={this.configureScene}
+      menuItemSelected = {this._menuItemSelected}
+      isMenuOpen = {this.state.menuOpen}
 
-          { this.state.menuOpen ?
-            <Menu closeMenu={this._closeMenu} onItemSelected={this._menuItemSelected }/> : null}
-        </View>
+    />
     );
   }
 
