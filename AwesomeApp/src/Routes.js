@@ -11,6 +11,9 @@ import {
   StyleSheet
 } from 'react-native';
 
+import Navbar from 'react-native-navbar';
+import Menu from 'react-native-navbar/Menu'
+
 import Home from "./Pages/Home";
 import One from "./Pages/One";
 import Two from "./Pages/Two";
@@ -25,8 +28,25 @@ export default class Routes extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      hasBack : false,
+      menuOpen : false
+    };
   }
 
+  componentDidMount = () => {
+    this.navigator.navigationContext.addListener('didfocus', () => {
+      this._checkBackButton();
+    });
+  };
+
+  _checkBackButton = () => {
+    setTimeout(() => {
+      this.setState({
+        hasBack: this.navigator.getCurrentRoutes().length > 1
+      });
+    }, 0);
+  };
 
   configureScene = (route, routeStack) => {
     return Navigator.SceneConfigs.FloatFromRight;
@@ -44,14 +64,41 @@ export default class Routes extends Component {
     }
   };
 
+  _back = () => {
+    console.log(this.navigator);
+    this.navigator.pop();
+  };
+  _openMenu = () => {
+    this.setState({menuOpen: true})
+  };
+
+  _closeMenu = () => {
+    this.setState({menuOpen: false})
+  };
+
   render() {
     return (
+      <View style={styles.appView}>
           <Navigator
+            navigationBar=
+              {
+                <Navbar
+                        hasBack={this.state.hasBack}
+                        backPressed={this._back}
+                        show={true}
+                        title={"Awesome navbar"}
+                        openMenu={this._openMenu}
+                />
+              }
             initialRoute={APP_ROUTES.HOME}
             renderScene={this.renderScene}
             ref={(nav) => this.navigator = nav}
             configureScene={this.configureScene}
           />
+
+          { this.state.menuOpen ?
+            <Menu closeMenu={this._closeMenu} onItemSelected={this._menuItemSelected }/> : null}
+        </View>
     );
   }
 
@@ -59,8 +106,6 @@ export default class Routes extends Component {
 const styles = StyleSheet.create({
   appView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: 'center',
-    backgroundColor: '#327ab9'
+    backgroundColor: '#ffffff'
   }
 });
