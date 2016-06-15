@@ -99,7 +99,8 @@ export default class Routes extends Component {
       configureScene={this.configureScene}
       menuItemSelected = {this._menuItemSelected}
       isMenuOpen = {this.state.menuOpen}
-
+      buttonName = {"Logout"}
+      sceneStyle={ styles.fullPage}
     />
     );
   }
@@ -109,5 +110,12 @@ const styles = StyleSheet.create({
   appView: {
     flex: 1,
     backgroundColor: '#ffffff'
+  },
+
+  fullPage: {
+    top: 0,
+    height: getHeight(),
+    width: getWidth()
   }
+
 });
