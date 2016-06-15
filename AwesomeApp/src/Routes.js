@@ -8,10 +8,13 @@ import {
   Text,
   View,
   Navigator,
+  Dimensions,
   StyleSheet
 } from 'react-native';
 
 import NavbarWrapper from 'react-native-navbar';
+import backIcon from '../assets/ic_back_arrow.png';
+import menuIcon from '../assets/ic_menu.png';
 
 import Home from "./Pages/Home";
 import One from "./Pages/One";
@@ -22,6 +25,7 @@ export let APP_ROUTES = {
   ONE: {name: 'pageOne' , title:'pageOne'},
   TWO: {name: 'pageTwo' , title:'pageTwo'}
 };
+
 
 export default class Routes extends Component {
 
@@ -100,12 +104,25 @@ export default class Routes extends Component {
       menuItemSelected = {this._menuItemSelected}
       isMenuOpen = {this.state.menuOpen}
       buttonName = {"Logout"}
+      backIcon = {backIcon}
+      menuIcon = {menuIcon}
+      menuItems = {["button1" , "button2" , "button3"]}
       sceneStyle={ styles.fullPage}
     />
     );
   }
-
 }
+
+
+function getWidth() {
+  const { width } = Dimensions.get('window');
+  return width;
+}
+function getHeight() {
+  const { height } = Dimensions.get('window');
+  return height;
+}
+
 const styles = StyleSheet.create({
   appView: {
     flex: 1,
